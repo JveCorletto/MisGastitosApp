@@ -13,7 +13,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             MisGastitosAppTheme {
-                AppNavHost()
+                AppNavHost() // ← Esto debe llamar a tu AppNavHost completo
             }
         }
     }

@@ -24,28 +24,47 @@ class AuthViewModel @Inject constructor(
     fun isLoggedIn() = repo.isLoggedIn
 
     fun register(email: String, pass: String, onSuccess: () -> Unit) = viewModelScope.launch {
+        if (email.isBlank() || pass.isBlank()) {
+            _state.value = AuthState(error = "Email y contraseña son requeridos")
+            return@launch
+        }
+
+        if (pass.length < 6) {
+            _state.value = AuthState(error = "La contraseña debe tener al menos 6 caracteres")
+            return@launch
+        }
+
         runCatching {
-            _state.value = AuthState(loading = true)
+            _state.value = AuthState(loading = true, error = null)
             repo.register(email.trim(), pass)
         }.onSuccess {
             _state.value = AuthState()
             onSuccess()
         }.onFailure {
-            _state.value = AuthState(error = it.message)
+            _state.value = AuthState(error = it.message ?: "Error desconocido")
         }
     }
 
     fun login(email: String, pass: String, onSuccess: () -> Unit) = viewModelScope.launch {
+        if (email.isBlank() || pass.isBlank()) {
+            _state.value = AuthState(error = "Email y contraseña son requeridos")
+            return@launch
+        }
+
         runCatching {
-            _state.value = AuthState(loading = true)
+            _state.value = AuthState(loading = true, error = null)
             repo.login(email.trim(), pass)
         }.onSuccess {
             _state.value = AuthState()
             onSuccess()
         }.onFailure {
-            _state.value = AuthState(error = it.message)
+            _state.value = AuthState(error = it.message ?: "Error desconocido")
         }
     }
 
     fun logout() = repo.logout()
+
+    fun clearError() {
+        _state.value = AuthState(error = null)
+    }
 }

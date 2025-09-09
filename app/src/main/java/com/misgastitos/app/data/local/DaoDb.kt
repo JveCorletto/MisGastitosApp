@@ -7,8 +7,17 @@ interface CategoryDao {
     @Query("SELECT * FROM categories ORDER BY name")
     suspend fun all(): List<CategoryEntity>
 
+    @Query("SELECT * FROM categories WHERE id = :id")
+    suspend fun getById(id: Long): CategoryEntity?
+
     @Insert
     suspend fun insert(cat: CategoryEntity): Long
+
+    @Update
+    suspend fun update(cat: CategoryEntity)
+
+    @Query("DELETE FROM categories WHERE id = :id")
+    suspend fun delete(id: Long)
 }
 
 @Dao
@@ -18,11 +27,17 @@ interface ExpenseDao {
 
     @Insert
     suspend fun insert(exp: ExpenseEntity): Long
+
+    @Update
+    suspend fun update(exp: ExpenseEntity)
+
+    @Query("DELETE FROM expenses WHERE id = :id")
+    suspend fun delete(id: Long)
 }
 
 @Database(
     entities = [CategoryEntity::class, ExpenseEntity::class],
-    version = 1
+    version = 2 // Incrementa la versión
 )
 abstract class AppDb : RoomDatabase() {
     abstract fun categoryDao(): CategoryDao

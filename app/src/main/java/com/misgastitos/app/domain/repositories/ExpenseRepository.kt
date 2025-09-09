@@ -5,7 +5,8 @@ data class Expense(
     val amount: Double,
     val date: Long,
     val categoryId: Long? = null,
-    val note: String? = null
+    val note: String? = null,
+    val category: Category? = null // Nueva propiedad
 )
 
 interface ExpenseRepository {

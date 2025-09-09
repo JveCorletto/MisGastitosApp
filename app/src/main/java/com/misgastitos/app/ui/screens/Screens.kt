@@ -16,13 +16,6 @@ import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.CenterAlignedTopAppBar
 
 @Composable
-fun LoginScreen(onDone: () -> Unit) {
-    Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-        Button(onClick = onDone) { Text("Entrar (MVP)") }
-    }
-}
-
-@Composable
 @OptIn(ExperimentalMaterial3Api::class)
 fun HomeScreen(onAdd: () -> Unit, vm: HomeViewModel = hiltViewModel()) {
     val items by vm.items.collectAsState()
